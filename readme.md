@@ -1,10 +1,18 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
-
 Tina Back Office
 
-How to run?
-php artisan serve
+Done:
+1. http->https
+2. Update UIs
 
-it will run on https://localhost:8000 as default
+Not Done:
+Q/A part
 
-Demo version of Users, Computer resolution, Convenience Store
+How to run? (I am not familiar with linux or mac. so I will expain for xampp of windows version)
+1. Make new folder("back office")
+2. Copy/Past this source code to "back office" folder
+3. Move the folder to C:/xampp/htdocs
+4. Config httpd.conf of apache server like:
+DocumentRoot "C:/xampp/htdocs" -> DocumentRoot "C:/xampp/htdocs/back office/public"
+<Directory "C:/xampp/htdocs"> -> <Directory "C:/xampp/htdocs/back office/public">
+5. Run apache
+6. visit: https://localhost
