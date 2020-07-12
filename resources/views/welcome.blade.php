@@ -1,83 +1,109 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Back Office of Tina</title>
+  <link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
+  <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
 
-        <title>Back Office of Tina</title>
+</head>
+<body>
+@include('partials.navbar')
+<div class="container body-content">
+  <div class="text-wrapper">
+    <h1 style="font-family: fantasy;">Back Office of Tina</h1>
+    <p class="body-intro" style="font-family: cursive;">Made by <b>inoui.</b>agency</p>
+    <a href="#" class="button" style="display:none;">Download Now!</a>
+  </div>
+  <div class="phone-wrapper">
+    <a href="#" class="arrow-left"><img src="http://dev.themaninblue.com/canva/learntocode/images/arrow-left.svg"></a>
+    <div class="phone">
+      <img src="http://dev.themaninblue.com/canva/learntocode/images/iphone.png" alt="iPhone mockup">
+      <ul class="carousel">
+        <li><img src="{{ asset('img/1.jpg') }}" alt="Screen"></li>
+        <li><img src="{{ asset('img/2.jpg') }}" alt="Screen"></li>
+        <li><img src="{{ asset('img/3.jpg') }}" alt="Screen"></li>
+        <li><img src="{{ asset('img/4.jpg') }}" alt="Screen"></li>
+      </ul>
+    </div>
+    <a href="#" class="arrow-right"><img src="http://dev.themaninblue.com/canva/learntocode/images/arrow-right.svg"></a>
+  </div>
+</div>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+<div class="mask" style="display:none;">
+  <div class="dialog">
+    <h2>Get the awesome!</h2>
+    <p>There's only one more thing you have to do before you can get the awesome, and that's give us your email address:</p>
+    <form>
+      <input type="email" />
+      <input class="button" type="submit" value="Gimme!" />
+    </form>
+  </div>
+</div>
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
+<footer>
+  <!-- <ul>
+    <li><a href="#">Terms &amp; conditions</a></li>
+    <li><a href="#">Privacy policy</a></li>
+  </ul> -->
+</footer>
 
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            <div class="content">
-                <div class="title m-b-md">
-                    Back Office of Tina
-                </div>
-
-                <div class="links">
-                    <a href="/users">My users</a>
-                    <a href="/solutions">My IT resolutions</a>
-                    <a href="/convenience">My convenience stores</a>
-                    <a href="/tinalab">TinaLab</a>
-                </div>
-            </div>
-        </div>
-    </body>
+</body>
 </html>
+<script>
+init();
+
+
+function init() {
+  document.querySelector('.text-wrapper .button').addEventListener('click', clickButton);
+  document.querySelector('.mask').addEventListener('click', clickMask);
+  document.querySelector('.arrow-left').addEventListener('click', clickArrowLeft);
+  document.querySelector('.arrow-right').addEventListener('click', clickArrowRight);
+}
+
+
+function clickButton(event) {
+  document.querySelector('.mask').classList.add('on');
+  event.preventDefault();
+}
+
+
+function clickMask(event) {
+  if (event.target == this) {
+    this.classList.remove('on');
+  }
+}
+
+
+function clickArrowLeft(event) {
+  var carousel = document.querySelector('.carousel');
+
+  if (carousel.classList.contains('page4')) {
+    carousel.classList.remove('page4');
+  }
+  else if (carousel.classList.contains('page3')) {
+    carousel.classList.remove('page3');
+  }
+  else if (carousel.classList.contains('page2')) {
+    carousel.classList.remove('page2');
+  }
+
+  event.preventDefault();
+}
+
+
+function clickArrowRight(event) {
+  var carousel = document.querySelector('.carousel');
+
+  if (carousel.classList.contains('page2')) {
+    carousel.classList.add('page3');
+  }
+  else {
+ carousel.classList.add('page2');
+  }
+
+  event.preventDefault();
+}
+</script>
