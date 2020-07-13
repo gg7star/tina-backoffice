@@ -11,15 +11,11 @@ class HomeController extends Controller
         return view('users');
     }
 
-    public function solutions(){
-    	return view('solutions');	
-    }
-
     public function convenience(){
     	return view('convenience');
     }
 
-	public function tinalab(){
-    	return view('tinalab');
+	public function qa(){
+    	return view('qa');
     }
 }

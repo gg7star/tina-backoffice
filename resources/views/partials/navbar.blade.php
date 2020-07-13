@@ -14,7 +14,7 @@
       <div id="navbar5" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
           <li class=""><a href="{{url('users')}}">My Users</a></li>
-          <li><a href="{{url('solutions')}}">My IT Resolutions</a></li>
+          <li><a href="{{url('qa')}}">My IT Resolutions</a></li>
           <li><a href="{{url('convenience')}}">My Convenience Stores</a></li>
         </ul>
       </div>

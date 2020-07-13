@@ -15,6 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('users', 'HomeController@users');
-Route::get('solutions', 'HomeController@solutions');
 Route::get('convenience', 'HomeController@convenience');
-Route::get('tinalab', 'HomeController@tinalab');
+Route::get('qa', 'HomeController@qa');

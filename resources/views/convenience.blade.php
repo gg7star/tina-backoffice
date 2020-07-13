@@ -5,9 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BackOffice - My Convenience Stores</title>
-<link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-<link rel="stylesheet" href="{{ asset('css/navbar.css') }}">
-<link rel="shortcut icon" href="{{ asset('favicon.png') }}">
+<link rel="stylesheet" href="{{ secure_asset('css/custom.css') }}">
+<link rel="stylesheet" href="{{ secure_asset('css/navbar.css') }}">
+<link rel="shortcut icon" href="{{ secure_asset('favicon.png') }}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -24,7 +24,7 @@
 <body>
 
 @include('partials.navbar')
-<div class="container">
+<div class="" style="padding:0px 10px;">
     <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -46,7 +46,7 @@
                         <th>Longitude</th>
                         <th>Address</th>
                         <th>Logo</th>
-                        <th >Actions</th>
+                        <th style="width: 85px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="tbody">
