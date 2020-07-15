@@ -22,7 +22,9 @@
 
 </head>
 <body>
-
+<!-- <div class="loading_screen">
+    <div class="loader"></div>
+</div> -->
 @include('partials.navbar')
 <div class="" style="padding:0px 10px;">
     <div class="table-wrapper">
@@ -88,7 +90,7 @@
                     <button type="button" class="btn btn-default add-data-from-delete-form" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-success desabled" id="submitUser">Add</button>
                 </div>
-            </form>            
+            </form>
         </div>
     </div>
 </div>
@@ -144,7 +146,9 @@
 
 <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
 <script>
-
+$(window).on('load',function(){
+  $('.loading_screen').css('display','none');
+});
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyDoAjhMLWRtJT62MhtNPxcGugVdLFKjMFU",

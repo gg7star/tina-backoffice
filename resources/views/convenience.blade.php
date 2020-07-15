@@ -22,7 +22,9 @@
 
 </head>
 <body>
-
+<!-- <div class="loading_screen">
+    <div class="loader"></div>
+</div> -->
 @include('partials.navbar')
 <div class="" style="padding:0px 10px;">
     <div class="table-wrapper">
@@ -157,7 +159,9 @@
 <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBx0QJx7WaFNYgjG84uBAr9HAl9Js3vD0&libraries=places&sensor=true"></script>
 <script>
-
+$(window).on('load',function(){
+  $('.loading_screen').css('display','none');
+});
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyDoAjhMLWRtJT62MhtNPxcGugVdLFKjMFU",

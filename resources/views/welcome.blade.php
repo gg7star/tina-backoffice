@@ -10,6 +10,9 @@
 
 </head>
 <body>
+<!-- <div class="loading_screen">
+    <div class="loader"></div>
+</div> -->
 @include('partials.navbar')
 <div class="container body-content">
   <div class="text-wrapper">
@@ -53,6 +56,9 @@
 </body>
 </html>
 <script>
+$(window).on('load',function(){
+  $('.loading_screen').css('display','none');
+});
 init();
 
 
