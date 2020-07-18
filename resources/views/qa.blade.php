@@ -30,7 +30,10 @@ a.edit i{
   color: #FFC107;
 }
 a.addData i{
-    color: #398439;    
+    color: #398439;
+}
+a.addinfoData i{
+    color: #398439;
 }
 a.delete i{
     color: #F44336;
@@ -42,6 +45,10 @@ ul li span a {
     overflow: hidden;
     white-space: nowrap;
     color: #333;
+}
+ul li a.elements{
+    font-style: italic;
+    color: blue;
 }
 </style>
 </head>
@@ -151,6 +158,26 @@ ul li span a {
         </div>
     </div>
 </div>
+<!-- Add Info Modal -->
+<div id="addinfo-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addinfo_form" class="" method="POST" action="">
+                <div class="modal-header">                      
+                    <h4 class="modal-title">Add Info</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" id="addinfo_Body">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success desabled" id="addINFO">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- Update Model -->
 <form action="" method="POST" class="update-record-model form-horizontal">
     <div id="update-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
@@ -167,6 +194,28 @@ ul li span a {
                     <button type="button" class="btn btn-default update-data-from-delete-form" data-dismiss="modal">Cancel</button>
                     <!-- <input type="button" class="btn btn-default update-data-from-delete-form" data-dismiss="modal" value="Cancel"> -->
                     <button type="button" class="btn btn-info updateRecord">Update</button>
+                    <!-- <input type="submit" class="btn btn-info updateUserRecord" value="Update"> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- Update Info Model -->
+<form action="" method="POST" class="update-info-form form-horizontal">
+    <div id="updateinfo-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" style="width:55%;">
+            <div class="modal-content" style="overflow: hidden;">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit</h4>                    
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" id="updateinfoBody">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <!-- <input type="button" class="btn btn-default update-data-from-delete-form" data-dismiss="modal" value="Cancel"> -->
+                    <button type="button" class="btn btn-info updateinfoRecord">Update</button>
                     <!-- <input type="submit" class="btn btn-info updateUserRecord" value="Update"> -->
                 </div>
             </div>
@@ -242,7 +291,7 @@ function get_data(){
     firebase.database().ref('maps_draft/'+sel_cate+'/root/').on('value', function(snapshot) {
         var value = snapshot.val();
         if(value != null) {
-            draw_node('root',value.title,null,value.yid,value.nid,value.did);
+            draw_node('root',value.title,null,value.yid,value.nid,value.did,null);
         } else {
             if((sel_cate=="ordinateur")||(sel_cate=="logiciel")||(sel_cate=="internet_réseaux")||(sel_cate=="périphérique")||(sel_cate=="astuce")){
                 firebase.database().ref('maps_draft/'+sel_cate+'/root/').set({
@@ -254,13 +303,18 @@ function get_data(){
         }
     });
 }
-function draw_node(index, title, solution, yid, nid, did){
+function draw_node(index, title, solution, yid, nid, did, info){
     var sub_htmls = [];
     if(solution == null){
-        if((index !== "undefined") && (index != null)){
-            sub_htmls.push('<ul><li><span><a>'+title+'</a><a data-toggle="modal" data-target="#update-modal" class="edit updateData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></span></li></ul><div id="ynd_'+lastIndex+'"></div>');
-            $('#'+index).html(sub_htmls.join(""));
-            get_child_node(index, yid, nid, did);
+        if(info == null){
+            if((index !== "undefined") && (index != null)){
+                sub_htmls.push('<ul><li><span><a>'+title+'</a><a data-toggle="modal" data-target="#update-modal" class="edit updateData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></span></li></ul><div id="ynd_'+lastIndex+'"></div>');
+                $('#'+index).html(sub_htmls.join(""));
+                get_child_node(index, yid, nid, did);
+            }
+        }else {
+            sub_htmls.push('<ul><li><span><a>'+info[0]+'</a><a data-toggle="modal" data-target="#updateinfo-modal" class="edit updateinfoData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></span></li></ul>');
+            $('#info_'+index).html(sub_htmls.join(""));
         }
     } else {
         sub_htmls.push('<ul><li><span><a><b>A:</b>'+solution+'</a>\
@@ -273,18 +327,30 @@ function draw_node(index, title, solution, yid, nid, did){
 }
 function get_child_node(index, yid, nid, did){
     var ynd_htmls = [];
-    ynd_htmls.push('<ul><li><span><a>Yes</a><span id="ay_'+index+'"></span></li><div id="'+yid+'"></div>\
-        <li><span><a>No</a><span id="an_'+index+'"></span></li><div id="'+nid+'"></div>\
-        <li><span><a>I do not know</a><span id="ad_'+index+'"></span></li><div id="'+did+'"></div></ul>');
+    ynd_htmls.push('<ul><li><a class="elements">Info</a><span id="ai_'+index+'"></span></li><div id="info_'+index+'"></div>\
+        <li><a class="elements">Yes</a><span id="ay_'+index+'"></span></li><div id="'+yid+'"></div>\
+        <li><a class="elements">No</a><span id="an_'+index+'"></span></li><div id="'+nid+'"></div>\
+        <li><a class="elements">I do not know</a><span id="ad_'+index+'"></span></li><div id="'+did+'"></div></ul>');
     $('#ynd_'+lastIndex).html(ynd_htmls.join(""));
     lastIndex ++;
+    firebase.database().ref('maps_draft/'+sel_cate+'/'+index+'/info').on('value', function(snapshot) {
+        var i_value = snapshot.val();
+        if((i_value != null)&&(i_value !== "undefined")){
+            var info = [i_value.title, i_value.content, i_value.image];
+            draw_node(index,null,null,null,null,null,info);
+        } else {
+            var add_htmls =[];
+            add_htmls.push('<a data-target="#addinfo-modal" class="addinfoData" data-toggle="modal" data-btn="i_btn" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Add">&#xE147;</i></a>');
+            $('#ai_'+index).html(add_htmls.join(""));
+        }
+    });
     firebase.database().ref('maps_draft/'+sel_cate+'/'+yid+'/').on('value', function(snapshot) {
         var y_value = snapshot.val();
         if(y_value != null){
             if(y_value.solution != null){
-                draw_node(yid,null,y_value.solution,null,null,null);
+                draw_node(yid,null,y_value.solution,null,null,null,null);
             } else {
-                draw_node(yid,y_value.title,null,y_value.yid,y_value.nid,y_value.did);
+                draw_node(yid,y_value.title,null,y_value.yid,y_value.nid,y_value.did,null);
             }
         } else {
             var add_htmls =[];
@@ -296,9 +362,9 @@ function get_child_node(index, yid, nid, did){
         var n_value = snapshot.val();
         if(n_value != null){
             if(n_value.solution != null){
-                draw_node(nid,null,n_value.solution,null,null,null);
+                draw_node(nid,null,n_value.solution,null,null,null,null);
             } else {
-                draw_node(nid,n_value.title,null,n_value.yid,n_value.nid,n_value.did);
+                draw_node(nid,n_value.title,null,n_value.yid,n_value.nid,n_value.did,null);
             }
         } else {
             var add_htmls =[];
@@ -310,9 +376,9 @@ function get_child_node(index, yid, nid, did){
         var d_value = snapshot.val();
         if(d_value != null){
             if(d_value.solution != null){
-                draw_node(did,null,d_value.solution,null,null,null);
+                draw_node(did,null,d_value.solution,null,null,null,null);
             } else {
-                draw_node(did,d_value.title,null,d_value.yid,d_value.nid,d_value.did);
+                draw_node(did,d_value.title,null,d_value.yid,d_value.nid,d_value.did,null);
             }
         } else {
             var add_htmls =[];
@@ -321,6 +387,45 @@ function get_child_node(index, yid, nid, did){
         }
     });
 }
+// Update Info Data
+var updateinfoID = 0;
+$('body').on('click', '.updateinfoData', function() {
+    updateinfoID = $(this).attr('data-id');
+    firebase.database().ref('maps_draft/'+sel_cate+'/'+updateinfoID+'/info').on('value', function(snapshot) {
+        var values = snapshot.val();
+        var updateData = '<div class="form-group">\
+                <label for="info_title">Title</label>\
+                <input id="info_title" type="text" class="form-control" name="info_title" value="'+values.title+'" required autofocus></div>\
+                <div class="form-group">\
+                <label for="info_content">Content</label>\
+                <input id="info_content" type="text" class="form-control" name="info_content" value="'+values.content+'" required autofocus></div>\
+                <div class="form-group">\
+                <label for="info_img">Image (e.g: http://anr.gwl.mybluehost.me/depanneur_fibrotech.png)</label>\
+                <input id="info_img" type="text" class="form-control" name="info_img" value="'+values.image+'" required autofocus></div>';
+        $('#updateinfoBody').html(updateData);
+    });
+});
+$('.updateinfoRecord').on('click', function() {
+    var values = $(".update-info-form").serializeArray();
+    var postData = {
+            title : values[0].value,
+            content : values[1].value,
+            image : values[2].value,
+        };
+    var updates = {};
+    updates['maps_draft/'+sel_cate+'/'+updateinfoID+'/info'] = postData;
+    firebase.database().ref().update(updates, function(error) {
+        if (error) {
+          // The write failed...
+          $('.loading_screen').css('display','none');
+          alert(error);
+        } else {
+          // Data saved successfully!
+          $('.loading_screen').css('display','none');
+        }
+      });
+    $("#updateinfo-modal").modal('hide');
+});
 // Update Data
 var updateID = 0;
 var update_solution = null;
@@ -377,6 +482,39 @@ $('.updateRecord').on('click', function() {
         }
       });
     $("#update-modal").modal('hide');
+});
+//Add Info
+var qid = 0;
+$('body').on('click', '.addinfoData', function() {
+    qid = $(this).attr('data-id');
+    firebase.database().ref('maps_draft/'+sel_cate+'/'+qid+'/info').on('value', function(snapshot) {
+        var values_info = snapshot.val();
+        var addData = '<div class="form-group">\
+                        <label for="info_title" class="col-md-12 col-form-label">Title</label>\
+                        <input id="info_title" type="text" class="form-control" name="info_title" value="" required autofocus>\
+                    </div>\
+                    <div class="form-group">\
+                        <label for="info_content" class="col-md-12 col-form-label">Content</label>\
+                        <input id="info_content" type="text" class="form-control" name="info_content" value="" required autofocus>\
+                    </div>\
+                    <div class="form-group">\
+                        <label for="info_img" class="col-md-12 col-form-label">Image (e.g: http://anr.gwl.mybluehost.me/depanneur_fibrotech.png)</label>\
+                        <input id="info_img" type="text" class="form-control" name="info_img" value="" required autofocus>\
+                    </div>';
+        $('#addinfo_Body').html(addData);
+        $("#addINFO").removeClass('desabled');
+    });
+});
+$('#addINFO').on('click', function(){
+    var values = $("#addinfo_form").serializeArray();
+    firebase.database().ref('maps_draft/'+sel_cate+'/'+qid+'/info').set({
+        title: values[0].value,
+        content: values[1].value,
+        image: values[2].value
+    });
+    $("#addinfo_form input").val("");
+    $("#addinfo-modal").modal('hide');
+    // get_data();
 });
 //Add Data
 var add_parentID = 0;
