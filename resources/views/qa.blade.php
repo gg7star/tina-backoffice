@@ -1,26 +1,8 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BackOffice - QA</title>
-<link rel="stylesheet" href="{{ secure_asset('css/navbar.css') }}">
-<link rel="shortcut icon" href="{{ secure_asset('favicon.png') }}">
-<link rel="stylesheet" href="{{ secure_asset('css/custom.css') }}">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="{{ secure_asset('css/qa.css') }}">
-
+@extends('layout.layout')
+@section('style')
 <style type="text/css">
 .desabled {
 	pointer-events: none;    
-}
-.my_tree ul {
-  list-style-type: none !important;
-  padding-left: 23px;
 }
 a i {
     font-size: 20px;
@@ -38,7 +20,7 @@ a.addinfoData i{
 a.delete i{
     color: #F44336;
 }
-ul li span a {
+ul li a {
     max-width: 250px;
     display: inline-block;
     text-overflow: ellipsis;
@@ -48,15 +30,10 @@ ul li span a {
 }
 ul li a.elements{
     font-style: italic;
-    color: blue;
 }
 </style>
-</head>
-<body>
-<!-- <div class="loading_screen">
-    <div class="loader"></div>
-</div> -->
-@include('partials.navbar')
+@endsection
+@section('content')
 <div class="" style="padding:0px 10px;">
     <div class="table-wrapper" style="margin-bottom: 0px; padding-bottom: 5px;">
         <div class="table-title">
@@ -85,9 +62,9 @@ ul li a.elements{
         </select>
     </div>
 </div>
-<div id="qa_tree" class="my_tree">
-    <div id="root">
-    </div>
+
+<div id="root">
+
 </div>
 <!-- Export Modal -->
 <div id="export-modal" class="modal fade">
@@ -244,16 +221,9 @@ ul li a.elements{
         </div>
     </div>
 </form>
-</body>
-</html>
-
-
-<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+@endsection
+@section('script')
 <script>
-// $(window).on('load',function(){
-//   $('.loading_screen').css('display','none');
-// });
-// Initialize Firebase
 var config = {
     apiKey: "AIzaSyDoAjhMLWRtJT62MhtNPxcGugVdLFKjMFU",
     authDomain: "tina-project-a9ad6.firebaseapp.com",
@@ -308,29 +278,29 @@ function draw_node(index, title, solution, yid, nid, did, info){
     if(solution == null){
         if(info == null){
             if((index !== "undefined") && (index != null)){
-                sub_htmls.push('<ul><li><span><a>'+title+'</a><a data-toggle="modal" data-target="#update-modal" class="edit updateData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></span></li></ul><div id="ynd_'+lastIndex+'"></div>');
+                sub_htmls.push('<ul><li><a><button type="button" id="pre_icon">+</button>'+title+'</a><a data-toggle="modal" data-target="#update-modal" class="edit updateData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a><div id="ynd_'+lastIndex+'"></div></li>');
                 $('#'+index).html(sub_htmls.join(""));
                 get_child_node(index, yid, nid, did);
             }
         }else {
-            sub_htmls.push('<ul><li><span><a>'+info[0]+'</a><a data-toggle="modal" data-target="#updateinfo-modal" class="edit updateinfoData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></span></li></ul>');
+            sub_htmls.push('<ul><li><a>'+info[0]+'</a><a data-toggle="modal" data-target="#updateinfo-modal" class="edit updateinfoData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></li></ul>');
             $('#info_'+index).html(sub_htmls.join(""));
         }
     } else {
-        sub_htmls.push('<ul><li><span><a><b>A:</b>'+solution+'</a>\
+        sub_htmls.push('<ul><li><a><b>A:</b>'+solution+'</a>\
             <a data-toggle="modal" data-target="#update-modal" class="edit updateData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>\
             <a data-toggle="modal" data-target="#remove-modal" class="delete removeData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>\
-            </span></li></ul>');
+            </li></ul>');
         $('#'+index).html(sub_htmls.join(""));
     }
     $('.loading_screen').css('display','none');
 }
 function get_child_node(index, yid, nid, did){
     var ynd_htmls = [];
-    ynd_htmls.push('<ul><li><a class="elements">Info</a><span id="ai_'+index+'"></span></li><div id="info_'+index+'"></div>\
-        <li><a class="elements">Yes</a><span id="ay_'+index+'"></span></li><div id="'+yid+'"></div>\
-        <li><a class="elements">No</a><span id="an_'+index+'"></span></li><div id="'+nid+'"></div>\
-        <li><a class="elements">I do not know</a><span id="ad_'+index+'"></span></li><div id="'+did+'"></div></ul>');
+    ynd_htmls.push('<ul><li><a class="elements"><button type="button" id="pre_icon">+</button>Info</a><span id="ai_'+index+'"></span><div id="info_'+index+'"></div></li>\
+        <li><a class="elements"><button type="button" id="pre_icon">+</button>Yes</a><span id="ay_'+index+'"></span><div id="'+yid+'"></div></li>\
+        <li><a class="elements"><button type="button" id="pre_icon">+</button>No</a><span id="an_'+index+'"></span><div id="'+nid+'"></div></li>\
+        <li><a class="elements"><button type="button" id="pre_icon">+</button>I do not know</a><span id="ad_'+index+'"></span><div id="'+did+'"></div></li></ul></ul>');
     $('#ynd_'+lastIndex).html(ynd_htmls.join(""));
     lastIndex ++;
     firebase.database().ref('maps_draft/'+sel_cate+'/'+index+'/info').on('value', function(snapshot) {
@@ -698,4 +668,14 @@ $('.deleteMatchRecord').on('click', function(){
     $("#remove-modal").modal('hide');
     get_data();
 });
+$("body").on('click', '#pre_icon', function() {
+    var obj = $(this);
+    $(this).parent().closest('li').find('ul:first').toggleClass('show-effect');
+    if ($(this).text() == "+") {
+        $(this).html('-');
+    } else {
+        $(this).html('+');
+    }
+});
 </script>
+@endsection

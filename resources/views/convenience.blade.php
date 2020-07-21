@@ -1,31 +1,12 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BackOffice - My Convenience Stores</title>
-<link rel="stylesheet" href="{{ secure_asset('css/custom.css') }}">
-<link rel="stylesheet" href="{{ secure_asset('css/navbar.css') }}">
-<link rel="shortcut icon" href="{{ secure_asset('favicon.png') }}">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
+@extends('layout.layout')
+@section('style')
 <style type="text/css">
 .desabled {
 	pointer-events: none;
 }
 </style>
-
-</head>
-<body>
-<!-- <div class="loading_screen">
-    <div class="loader"></div>
-</div> -->
-@include('partials.navbar')
+@endsection
+@section('content')
 <div class="" style="padding:0px 10px;">
     <div class="table-wrapper">
             <div class="table-title">
@@ -152,13 +133,10 @@
         </div>
     </div>
 </form>
-</body>
-</html>
-
-
-<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+@endsection
+@section('script')
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBx0QJx7WaFNYgjG84uBAr9HAl9Js3vD0&libraries=places&sensor=true"></script>
-<script>
+<script type="text/javascript">
 $(window).on('load',function(){
   $('.loading_screen').css('display','none');
 });
@@ -328,3 +306,4 @@ $('.deleteMatchRecord').on('click', function(){
 });
 
 </script>
+@endsection

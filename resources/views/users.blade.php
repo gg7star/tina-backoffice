@@ -1,31 +1,12 @@
-<!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BackOffice - My Users</title>
-<link rel="stylesheet" href="{{ secure_asset('css/custom.css') }}">
-<link rel="stylesheet" href="{{ secure_asset('css/navbar.css') }}">
-<link rel="shortcut icon" href="{{ secure_asset('favicon.png') }}">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
+@extends('layout.layout')
+@section('style')
 <style type="text/css">
 .desabled {
-	pointer-events: none;
+    pointer-events: none;
 }
 </style>
-
-</head>
-<body>
-<!-- <div class="loading_screen">
-    <div class="loader"></div>
-</div> -->
-@include('partials.navbar')
+@endsection
+@section('content')
 <div class="" style="padding:0px 10px;">
     <div class="table-wrapper">
             <div class="table-title">
@@ -140,15 +121,9 @@
         </div>
     </div>
 </form>
-</body>
-</html>
-
-
-<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
-<script>
-$(window).on('load',function(){
-  $('.loading_screen').css('display','none');
-});
+@endsection
+@section('script')
+<script type="text/javascript">
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyDoAjhMLWRtJT62MhtNPxcGugVdLFKjMFU",
@@ -249,17 +224,20 @@ $('body').on('click', '.updateData', function() {
 
 $('.updateUserRecord').on('click', function() {
     var values = $(".users-update-record-model").serializeArray();
-    var postData = {
-        firstname : values[0].value,
-        lastname : values[1].value,
-        email : values[2].value,
-        zipcode : values[3].value,
-    };
+    // var postData = {
+    //     firstname : values[0].value,
+    //     lastname : values[1].value,
+    //     email : values[2].value,
+    //     zipcode : values[3].value,
+    // };
 
-    var updates = {};
-    updates['/users/' + updateID] = postData;
-
-    firebase.database().ref().update(updates);
+    // var updates = {};
+    // updates['/users/' + updateID] = postData;    
+    // firebase.database().ref().update(updates);
+    firebase.database().ref('users/'+updateID+'/firstname').set(values[0].value);
+    firebase.database().ref('users/'+updateID+'/lastname').set(values[1].value);
+    firebase.database().ref('users/'+updateID+'/email').set(values[2].value);
+    firebase.database().ref('users/'+updateID+'/zipcode').set(values[3].value);
 
     $("#update-modal").modal('hide');
 });
@@ -282,3 +260,4 @@ $('.deleteMatchRecord').on('click', function(){
 //     $('body').find('.users-remove-record-model').find( "input" ).remove();
 // });
 </script>
+@endsection

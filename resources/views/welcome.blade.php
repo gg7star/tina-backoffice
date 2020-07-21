@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Back Office of Tina</title>
-  <link rel="stylesheet" href="{{ secure_asset('css/navbar.css') }}">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="shortcut icon" href="{{ secure_asset('favicon.png') }}">
-  <link rel="stylesheet" href="{{ secure_asset('css/landing.css') }}">
-
-</head>
-<body>
-<!-- <div class="loading_screen">
-    <div class="loader"></div>
-</div> -->
-@include('partials.navbar')
+@extends('layout.layout')
+@section('content')
 <div class="container body-content">
   <div class="text-wrapper">
     <h1 style="font-family: fantasy;">Back Office of Tina</h1>
@@ -52,13 +38,9 @@
     <li><a href="#">Privacy policy</a></li>
   </ul> -->
 </footer>
-
-</body>
-</html>
+@endsection
+@section('script')
 <script>
-$(window).on('load',function(){
-  $('.loading_screen').css('display','none');
-});
 init();
 
 
@@ -113,3 +95,4 @@ function clickArrowRight(event) {
   event.preventDefault();
 }
 </script>
+@endsection
