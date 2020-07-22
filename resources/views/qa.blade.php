@@ -169,9 +169,7 @@ ul li a.elements{
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default update-data-from-delete-form" data-dismiss="modal">Cancel</button>
-                    <!-- <input type="button" class="btn btn-default update-data-from-delete-form" data-dismiss="modal" value="Cancel"> -->
                     <button type="button" class="btn btn-info updateRecord">Update</button>
-                    <!-- <input type="submit" class="btn btn-info updateUserRecord" value="Update"> -->
                 </div>
             </div>
         </div>

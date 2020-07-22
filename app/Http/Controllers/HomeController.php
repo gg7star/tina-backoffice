@@ -18,4 +18,16 @@ class HomeController extends Controller
 	public function qa(){
     	return view('qa');
     }
+
+    public function payers(){
+        return view('payers');
+    }
+
+    public function advertisers(){
+        return view('advertisers');
+    }
+
+    public function ads(){
+        return view('ads');
+    }
 }

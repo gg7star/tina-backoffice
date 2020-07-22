@@ -31,20 +31,3 @@ a {
   width: 22px;
   font-family: monospace;
 }
-/*.tree .icon:before {
-  content:"+";
-  display:inline-block;
-  min-width:20px;
-  text-align:center;
-}
-.tree .icon .expanded:before {
-  content:"-";
-}
-
-
-
-.tree ul {
-  list-style-type: none !important;
-  padding-left: 23px;
-  display: none;
-}*/

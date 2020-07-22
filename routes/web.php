@@ -17,3 +17,6 @@ Route::get('/', function () {
 Route::get('users', 'HomeController@users');
 Route::get('convenience', 'HomeController@convenience');
 Route::get('qa', 'HomeController@qa');
+Route::get('payers', 'HomeController@payers');
+Route::get('advertisers', 'HomeController@advertisers');
+Route::get('ads', 'HomeController@ads');

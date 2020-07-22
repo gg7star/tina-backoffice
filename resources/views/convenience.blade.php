@@ -75,7 +75,7 @@
                         <input id="longitude" type="text" class="form-control" name="longitude" value="" required readonly>
                     </div>
                     <div class="form-group">
-                        <label for="img" class="col-md-12 col-form-label">Image (e.g: http://anr.gwl.mybluehost.me/depanneur_fibrotech.png)</label>
+                        <label for="img" class="col-md-12 col-form-label">Image(e.g: http://anr.gwl.mybluehost.me/depanneur_fibrotech.png)</label>
                         <input id="img" type="text" class="form-control" name="img" value="" required autofocus>
                     </div>
                 </div>
@@ -191,7 +191,7 @@ firebase.database().ref('stores/').on('value', function(snapshot) {
                     <td>'+ value.latitude +'</td>\
                     <td>'+ value.longitude +'</td>\
                     <td>'+ value.address +'</td>\
-                    <td>'+ value.image +'</td>\
+                    <td><img style="width:50px;" src="'+value.image+'"/></td>\
                     <td><a data-toggle="modal" data-target="#update-modal" class="edit updateData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>\
                     <a data-toggle="modal" data-target="#remove-modal" class="delete removeData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>\
                 </tr>');
@@ -262,7 +262,7 @@ $('body').on('click', '.updateData', function() {
                 <input id="longitude" type="text" class="form-control" name="longitude" value="'+values.longitude+'" required readonly>\
             </div>\
             <div class="form-group">\
-                <label for="img" class="col-md-12 col-form-label">Image</label>\
+                <label for="img" class="col-md-12 col-form-label">Image(e.g: http://anr.gwl.mybluehost.me/depanneur_fibrotech.png)</label>\
                 <input id="img" type="text" class="form-control" name="img" value="'+values.image+'" required autofocus>\
             </div>';
 
