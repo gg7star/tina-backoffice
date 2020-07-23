@@ -176,7 +176,7 @@ firebase.database().ref('advertisements/').on('value', function(snapshot) {
                         <td>'+ value.name +'</td>\
                         <td>'+ value.start_date +'</td>\
                         <td>'+ value.end_date +'</td>\
-                        <td><img style="width:50px;" src="/backoffice/public/img/'+value.image+'"/></td>\
+                        <td><img style="width:50px;" src="'+value.image+'"/></td>\
                         <td>'+ value.linked_url +'</td>\
                         <td><a data-toggle="modal" data-target="#update-modal" class="edit updateData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>\
                         <a data-toggle="modal" data-target="#remove-modal" class="delete removeData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>\
@@ -247,7 +247,7 @@ $('.submitAds').on('click', function(){
                     name: values[2].value,
                     start_date: values[3].value,
                     end_date: values[4].value,
-                    image: image_name,
+                    image: document.location.origin+"/img/"+image_name,
                     linked_url: values[5].value,
                 }, function(error) {
                     if(error)
@@ -317,7 +317,7 @@ $('.updateUserRecord').on('click', function() {
             firebase.database().ref('advertisements/'+updateID+'/name').set(values[0].value);
             firebase.database().ref('advertisements/'+updateID+'/start_date').set(values[1].value);
             firebase.database().ref('advertisements/'+updateID+'/end_date').set(values[2].value);
-            firebase.database().ref('advertisements/'+updateID+'/image').set(image_name);
+            firebase.database().ref('advertisements/'+updateID+'/image').set(document.location.origin+"/img/"+image_name);
             firebase.database().ref('advertisements/'+updateID+'/linked_url').set(values[3].value);
             $("#update-modal").modal('hide');
         },

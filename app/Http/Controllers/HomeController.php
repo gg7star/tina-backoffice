@@ -30,4 +30,15 @@ class HomeController extends Controller
     public function ads(){
         return view('ads');
     }
+
+    public function imageUpload(Request $request)
+    {
+        if ($request->images) {
+            $image = $request->images;
+            $imagesName = $image->getClientOriginalName();
+            $path = base_path() . '/public/img';
+            $image->move($path, $imagesName);
+            return response()->json($imagesName);
+        }
+    }
 }
