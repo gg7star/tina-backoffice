@@ -40,10 +40,11 @@
     </div>
 </div>
 <!-- Add Modal -->
-<div id="add-modal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="addUser" class="" method="POST" action="">
+<form action="" method="POST" enctype="multipart/form-data" class="addAds_form">
+    <div id="add-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
                 <div class="modal-header">                      
                     <h4 class="modal-title">Add Advertisers</h4>
                     <button type="button" class="close add-data-from-delete-form" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -56,40 +57,38 @@
                     <div class="form-group">
                         <label for="advertiser_email" class="col-md-12 col-form-label">Advertiser Email</label>
                         <select name="advertiser_email" id="advertiser_email" onchange="change_emails()">
-                        <!-- <option value="ordinateur">Ordinateur</option> -->
+                        
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="ads_name" class="col-md-12 col-form-label">Ads Name</label>
-                        <input id="ads_name" type="text" class="form-control" name="ads_name" value="" required autofocus>
+                        <input id="ads_name" type="text" class="form-control" name="ads_name" value="" autofocus>
                     </div>
                     <div class="form-group">
                         <label for="start_date" class="col-md-12 col-form-label">Start Date</label>
-                        <input id="start_date" type="date" class="form-control" name="start_date" value="" required autofocus>
+                        <input id="start_date" type="date" class="form-control" name="start_date" value="" autofocus>
                     </div>
                     <div class="form-group">
                         <label for="end_date" class="col-md-12 col-form-label">End Date</label>
-                        <input id="end_date" type="date" class="form-control" name="end_date" value="" required autofocus>
+                        <input id="end_date" type="date" class="form-control" name="end_date" value="" autofocus>
                     </div>
                     <div class="form-group">
-                        <label for="img" class="col-md-12 col-form-label">Image(e.g: http://anr.gwl.mybluehost.me/depanneur_fibrotech.png)</label>
-                        <!-- <input id="img" type="file" class="form-control" name="img" value="" accept="image/*" required autofocus> -->
-                        <input id="img" type="text" class="form-control" name="img" value="" required autofocus>
+                        <label for="image" class="col-md-12 col-form-label">Image</label>
+                        <input id="image" type="file" class="form-control" name="image" accept="image/*" value="" autofocus>
                     </div>
                     <div class="form-group">
                         <label for="linked_url" class="col-md-12 col-form-label">Linked Url(e.g: http://www.google.com)</label>
-                        <input id="linked_url" type="text" class="form-control" name="linked_url" value="" required autofocus>
+                        <input id="linked_url" type="text" class="form-control" name="linked_url" value="" autofocus>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default add-data-from-delete-form" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success desabled" id="submitUser">Add</button>
+                    <button type="button" class="btn btn-success submitAds">Add</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
-
+</form>
 <!-- Delete Model -->
 <form action="" method="POST" class="users-remove-record-model">
     <div id="remove-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
@@ -134,17 +133,15 @@
 @endsection
 @section('script')
 <script type="text/javascript">
-var file = null;
-function uploadImage(e) {
-    if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-      alert('The File APIs are not fully supported in this browser.');
-      return;
-    }
-    file = e.target.files[0];
-    if(!file) {
-        alert("Error for uploading image.");
-    }
-};
+$.ajaxSetup({
+     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+ });
+
+// function change_input(e){
+//     file_name = e.target.value;
+//     file_name = file_name.substring(file_name.lastIndexOf("\\") + 1, file_name.length);
+//     $("#image").val(file_name);
+// };
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyDoAjhMLWRtJT62MhtNPxcGugVdLFKjMFU",
@@ -179,7 +176,7 @@ firebase.database().ref('advertisements/').on('value', function(snapshot) {
                         <td>'+ value.name +'</td>\
                         <td>'+ value.start_date +'</td>\
                         <td>'+ value.end_date +'</td>\
-                        <td><img style="width:50px;" src="'+value.image+'"/></td>\
+                        <td><img style="width:50px;" src="/backoffice/public/img/'+value.image+'"/></td>\
                         <td>'+ value.linked_url +'</td>\
                         <td><a data-toggle="modal" data-target="#update-modal" class="edit updateData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>\
                         <a data-toggle="modal" data-target="#remove-modal" class="delete removeData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>\
@@ -189,7 +186,6 @@ firebase.database().ref('advertisements/').on('value', function(snapshot) {
             }
         });
     }
-    $("#submitUser").removeClass('desabled');
 });
 
 //Add Data
@@ -215,6 +211,7 @@ function change_emails() {
     sel_index = $("#advertiser_email").prop('selectedIndex');
     var sel_name = advertiser_names[sel_index];
     $('#advertiser_name').val(sel_name);
+
 }
 $('body').on('click', '.newads', function() {
     var email_htmls = [];
@@ -225,36 +222,51 @@ $('body').on('click', '.newads', function() {
     $('#advertiser_name').val(advertiser_names[0]);
     $('#advertiser_emails').value = advertiser_emails[0];
     sel_index = 0;
-    // $('body').on('change', '#img', function(e) { uploadImage(e); });
 });
 
-$('#submitUser').on('click', function(){
-    var values = $("#addUser").serializeArray();
-    var ads_id = firebase.database().ref('advertisements').push().key;
-    if(sel_index != null){
-        firebase.database().ref('advertisements/'+ads_id).set({
-            advertiser_id: advertiser_ids[sel_index],
-            name: values[2].value,
-            start_date: values[3].value,
-            end_date: values[4].value,
-            image: values[5].value,
-            linked_url: values[6].value,
-            // linked_url: values[5].value,
-        }, function(error) {
-            if(error)
-                alert(error);
-        });
-        // if(!file){
-        //     var storageRef = firebase.storage().ref('advertisements/'+ads_id+'/image/'+file.name);
-        //     storageRef.put(file);
-        // }
-        $("#addUser input").val("");
-        $("#add-modal").modal('hide');
-    } else {
-        alert("Please select a advertiser.");
+$('.submitAds').on('click', function(){
+    let image_upload_file = new FormData();
+    let TotalImages = $('#image')[0].files.length;  //Total Images
+    let images = $('#image')[0];  
+
+    for (let i = 0; i < TotalImages; i++) {
+        image_upload_file.append('images', images.files[i]);
     }
+    $.ajax({
+        type:'POST',
+        url:'{{ url("image-upload") }}',
+        data:image_upload_file,
+        contentType: false,
+        processData: false,
+        success: function (image_name) {
+            var values = $(".addAds_form").serializeArray();
+            var ads_id = firebase.database().ref('advertisements').push().key;
+            if(sel_index != null){
+                firebase.database().ref('advertisements/'+ads_id).set({
+                    advertiser_id: advertiser_ids[sel_index],
+                    name: values[2].value,
+                    start_date: values[3].value,
+                    end_date: values[4].value,
+                    image: image_name,
+                    linked_url: values[5].value,
+                }, function(error) {
+                    if(error)
+                        alert(error);
+                });
+                $(".addAds_form input").val("");
+                $("#add-modal").modal('hide');
+            } else {
+                alert("Please select a advertiser.");
+            }
+        },
+        error: function () {
+            alert("Uploading image was failed.")
+        }
+    });
 
 });
+// $('body').on('click', '.upload_img', function() {
+// });
 
 // Update Data
 var updateID = 0;
@@ -264,42 +276,55 @@ $('body').on('click', '.updateData', function() {
         var values = snapshot.val();
         var updateData = '<div class="form-group">\
                 <label for="ads_name">Ads Name</label>\
-                <input id="ads_name" type="text" class="form-control" name="ads_name" value="'+values.name+'" required autofocus>\
+                <input id="ads_name" type="text" class="form-control" name="ads_name" value="'+values.name+'" autofocus>\
             </div>\
             <div class="form-group">\
                 <label for="start_date">Start Date</label>\
-                <input id="start_date" type="date" class="form-control" name="start_date" value="'+values.start_date+'" required autofocus>\
+                <input id="start_date" type="date" class="form-control" name="start_date" value="'+values.start_date+'" autofocus>\
             </div>\
             <div class="form-group">\
                 <label for="end_date">End Date</label>\
-                <input id="end_date" type="date" class="form-control" name="end_date" value="'+values.end_date+'" required autofocus>\
+                <input id="end_date" type="date" class="form-control" name="end_date" value="'+values.end_date+'" autofocus>\
             </div>\
             <div class="form-group">\
-                <label for="img">Image(e.g: http://anr.gwl.mybluehost.me/depanneur_fibrotech.png)</label>\
-                <input id="img" type="text" class="form-control" name="img" value="'+values.image+'" required autofocus>\
+                <label for="update_image" class="col-md-12 col-form-label">Image</label>\
+                <input id="update_image" type="file" class="form-control" name="update_image" accept="image/*" autofocus>\
             </div>\
             <div class="form-group">\
                 <label for="linked_url">Linked Url(e.g: http://www.google.com)</label>\
-                <input id="linked_url" type="text" class="form-control" name="linked_url" value="'+values.linked_url+'" required autofocus>\
+                <input id="linked_url" type="text" class="form-control" name="linked_url" value="'+values.linked_url+'" autofocus>\
             </div>';
         $('#updateBody').html(updateData);
-        // $('body').on('change', '#img', function(e) { uploadImage(e); });
     });
 });
 
 $('.updateUserRecord').on('click', function() {
-    var values = $(".users-update-record-model").serializeArray();
-    firebase.database().ref('advertisements/'+updateID+'/name').set(values[0].value);
-    firebase.database().ref('advertisements/'+updateID+'/start_date').set(values[1].value);
-    firebase.database().ref('advertisements/'+updateID+'/end_date').set(values[2].value);
-    firebase.database().ref('advertisements/'+updateID+'/image').set(values[3].value);
-    firebase.database().ref('advertisements/'+updateID+'/linked_url').set(values[4].value);
-    // firebase.database().ref('advertisements/'+updateID+'/linked_url').set(values[3].value);
-    // if(!file){
-    //     var storageRef = firebase.storage().ref('advertisements/'+updateID+'/image/'+file.name);
-    //     storageRef.put(file);
-    // }
-    $("#update-modal").modal('hide');
+    let image_upload_file = new FormData();
+    let TotalImages = $('#update_image')[0].files.length;  //Total Images
+    let images = $('#update_image')[0];  
+
+    for (let i = 0; i < TotalImages; i++) {
+        image_upload_file.append('images', images.files[i]);
+    }
+    $.ajax({
+        type:'POST',
+        url:'{{ url("image-upload") }}',
+        data:image_upload_file,
+        contentType: false,
+        processData: false,
+        success: function (image_name) {
+            var values = $(".users-update-record-model").serializeArray();
+            firebase.database().ref('advertisements/'+updateID+'/name').set(values[0].value);
+            firebase.database().ref('advertisements/'+updateID+'/start_date').set(values[1].value);
+            firebase.database().ref('advertisements/'+updateID+'/end_date').set(values[2].value);
+            firebase.database().ref('advertisements/'+updateID+'/image').set(image_name);
+            firebase.database().ref('advertisements/'+updateID+'/linked_url').set(values[3].value);
+            $("#update-modal").modal('hide');
+        },
+        error: function () {
+            alert("Uploading image was failed.")
+        }
+    });
 });
 
 

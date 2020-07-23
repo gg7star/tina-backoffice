@@ -20,3 +20,4 @@ Route::get('qa', 'HomeController@qa');
 Route::get('payers', 'HomeController@payers');
 Route::get('advertisers', 'HomeController@advertisers');
 Route::get('ads', 'HomeController@ads');
+Route::post('image-upload', 'HomeController@imageUpload');

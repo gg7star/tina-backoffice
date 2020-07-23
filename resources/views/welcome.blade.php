@@ -11,10 +11,10 @@
     <div class="phone">
       <img src="http://dev.themaninblue.com/canva/learntocode/images/iphone.png" alt="iPhone mockup">
       <ul class="carousel">
-        <li><img src="{{ asset('img/1.jpg') }}" alt="Screen"></li>
-        <li><img src="{{ asset('img/2.jpg') }}" alt="Screen"></li>
-        <li><img src="{{ asset('img/3.jpg') }}" alt="Screen"></li>
-        <li><img src="{{ asset('img/4.jpg') }}" alt="Screen"></li>
+        <li><img src="{{ secure_asset('img/1.jpg') }}" alt="Screen"></li>
+        <li><img src="{{ secure_asset('img/2.jpg') }}" alt="Screen"></li>
+        <li><img src="{{ secure_asset('img/3.jpg') }}" alt="Screen"></li>
+        <li><img src="{{ secure_asset('img/4.jpg') }}" alt="Screen"></li>
       </ul>
     </div>
     <a href="#" class="arrow-right"><img src="http://dev.themaninblue.com/canva/learntocode/images/arrow-right.svg"></a>
