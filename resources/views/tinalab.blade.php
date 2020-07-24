@@ -31,6 +31,17 @@ ul li a {
 ul li a.elements{
     font-style: italic;
 }
+#root > ul {
+    padding-left: 5px!important;
+}
+#root {
+    color: #566787;border-bottom: 1px solid;
+    height: calc(35vh);
+    overflow-y: auto;
+}
+.marked_effect{
+    color: lightgreen!important;
+}
 </style>
 @endsection
 @section('content')
@@ -43,71 +54,43 @@ ul li a.elements{
                 </div>
                 <div class="col-sm-6">
                     <a data-target="#import-modal" class="btn btn-success" data-toggle="modal"><i class="material-icons">cloud_upload</i> <span>Import</span></a>
-                    <a data-target="#export-modal" class="btn btn-success" data-toggle="modal"><i class="material-icons">cloud_download</i> <span>Export</span></a>
                 </div>
-            </div>            
+            </div>
         </div>
-    </div>
-</div>
-<div class="row" style="margin-left: 8px; color: #566787;">
-    <div class="col-md-8">
-        <label for="category">Choose a category:</label>
-        <select name="category" id="category" onchange="change_category()">
-          <option value="ordinateur">Ordinateur</option>
-          <option value="périphérique">Périphérique</option>
-          <option value="logiciel">Logiciel</option>
-          <option value="astuce">Astuce</option>
-          <option value="internet_réseaux">Internet / Réseaux</option>
-          
-        </select>
+        <div class="row" style="margin-left: -6px;color: #566787;">
+            <div class="col-md-8">
+                <label for="category">Choose a category:</label>
+                <select name="category" id="category" onchange="change_category()">
+                  <option value="ordinateur">Ordinateur</option>
+                  <option value="périphérique">Périphérique</option>
+                  <option value="logiciel">Logiciel</option>
+                  <option value="astuce">Astuce</option>
+                  <option value="internet_réseaux">Internet / Réseaux</option>
+                  
+                </select>
+            </div>
+        </div>
+
+        <div id="root">
+
+        </div>
+        <table class="table table-striped table-hover" style="max-height: calc(40vh);
+        overflow-y: auto;display: block;">
+            <thead style="color: #566787;">
+                <tr>
+                    <th style="width:calc(100vw - 800px);">Last Question</th>
+                    <th style="width:500px;">Date of Fault</th>
+                    <th style="width:150px;">Q/A Tree</th>
+                    <th style="width:150px;">Mark</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_history">
+                        
+            </tbody>
+        </table>
     </div>
 </div>
 
-<div id="root">
-
-</div>
-<!-- Export Modal -->
-<div id="export-modal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form class="" method="POST" action="">
-                <div class="modal-header">                      
-                    <h4 class="modal-title">Export Data</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>For updating questions and answers, you are going to get all data of computer resolution from real database and save the data as draft.</p>
-                    <p>Are you sure you want to do this?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-success" id="exportQA">Yes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Import Modal -->
-<div id="import-modal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form class="" method="POST" action="">
-                <div class="modal-header">                      
-                    <h4 class="modal-title">Import Data</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>For showing the following questions and answers on tina app, you are going to replace the q/a data with current data of computer resolution in real database.</p>
-                    <p>Are you sure you want to do this?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-success" id="importQA">Yes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 <!-- Add Modal -->
 <div id="add-modal" class="modal fade">
     <div class="modal-dialog">
@@ -197,6 +180,26 @@ ul li a.elements{
         </div>
     </div>
 </form>
+<!-- Import Modal -->
+<div id="import-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="" method="POST" action="">
+                <div class="modal-header">                      
+                    <h4 class="modal-title">Import Data</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Current q/a will be updated on real database.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="importQA">Okay</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- Delete Model -->
 <form action="" method="POST" class="remove-record-model">
     <div id="remove-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
@@ -211,9 +214,7 @@ ul li a.elements{
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default remove-data-from-delete-form" data-dismiss="modal">Cancel</button>
-                    <!-- <input type="button" class="btn btn-default remove-data-from-delete-form" data-dismiss="modal" value="Cancel"> -->
                     <button type="button" class="btn btn-danger deleteMatchRecord">Delete</button>
-                    <!-- <input type="submit" class="btn btn-danger deleteMatchRecord" value="Delete"> -->
                 </div>
             </div>
         </div>
@@ -237,10 +238,10 @@ var database = firebase.database();
 var lastIndex = 0;
 var sel_cate = document.getElementById("category").value;
 var qa_type = document.getElementById('qa_type').value;
-
+get_history();
 function change_category() {
     sel_cate = document.getElementById("category").value;
-    get_data();
+    get_history();
 }
 function change_qatype() {
     qa_type = document.getElementById('qa_type').value;
@@ -252,10 +253,41 @@ function change_qatype() {
         $("#addData_title").css('display','none');
     }
 }
-// Get Data
-get_data();
+//get unresolved histories
+function get_history(){
+    firebase.database().ref('histories').on('value', function(snapshot) {
+        var value = snapshot.val();
+        var htmls_history = [];
+        if (value != null){
+            $.each(value, function(index, value){
+                if( (value) && ((value.solution == '')||(value.solution === undefined)) && (value.type == sel_cate) ){
+                    var last_question = value.questions[value.questions.length-1].title;
+                    var data = {"date_created":value.created};
+                    var date = new Date(parseInt(data.date_created));
+                    if(value.resolved == 'true'){
+                        htmls_history.push('<tr>\
+                        <td>'+ last_question +'</td>\
+                        <td>'+ date +'</td>\
+                        <td><a class="expand_tree" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Expand Q/A Tree">device_hub</i></a></td>\
+                        <td><a class="resolved marked_effect" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="resolved_mark">check</i></a></td>\
+                        </tr>');
+                    } else {
+                        htmls_history.push('<tr>\
+                        <td>'+ last_question +'</td>\
+                        <td>'+ date +'</td>\
+                        <td><a class="expand_tree" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Expand Q/A Tree">device_hub</i></a></td>\
+                        <td><a class="resolved" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="resolved_mark">check</i></a></td>\
+                        </tr>');
+                    }
+                }
+            });
+        }
+        $('#tbody_history').html(htmls_history);
+    });
+    get_data();
+}
+// Get q/a Data
 function get_data(){
-    $('.loading_screen').css('display','block');
     firebase.database().ref('maps_draft/'+sel_cate+'/root/').on('value', function(snapshot) {
         var value = snapshot.val();
         if(value != null) {
@@ -267,7 +299,6 @@ function get_data(){
                     qid: "root",
                 });
             }
-            // get_data();
         }
     });
 }
@@ -291,7 +322,6 @@ function draw_node(index, title, solution, yid, nid, did, info){
             </li></ul>');
         $('#'+index).html(sub_htmls.join(""));
     }
-    $('.loading_screen').css('display','none');
 }
 function get_child_node(index, yid, nid, did){
     var ynd_htmls = [];
@@ -600,47 +630,6 @@ $('#addQA').on('click', function(){
     $("#add-modal").modal('hide');
     get_data();
 });
-//Export Data
-$('#exportQA').on('click', function(){
-    var cate = sel_cate;
-    $('.loading_screen').css('display','block');
-    firebase.database().ref('maps').once('value', function(snapshot) {
-        var value = snapshot.val();
-        firebase.database().ref('maps_draft').remove();
-        firebase.database().ref('maps_draft').set(value, function(error) {
-            if (error) {
-              // The write failed...
-              $('.loading_screen').css('display','none');
-              alert(error);
-            } else {
-              alert("Exported successfully.");
-              sel_cate = cate;
-              get_data();
-            }
-          });
-    });
-    $('.loading_screen').css('display','none');
-    $("#export-modal").modal('hide');
-});
-//Import Data
-$('#importQA').on('click', function(){
-    $('.loading_screen').css('display','block');
-    firebase.database().ref('maps_draft').once('value', function(snapshot) {
-        var value = snapshot.val();
-        firebase.database().ref('maps').remove();
-        firebase.database().ref('maps').set(value, function(error) {
-            if (error) {
-              // The write failed...
-              $('.loading_screen').css('display','none');
-              alert(error);
-            } else {
-              alert("Imported successfully.");
-            }
-          });
-    });
-    $('.loading_screen').css('display','none');
-    $("#import-modal").modal('hide');
-});
 
 // Remove Data
 $("body").on('click', '.removeData', function() {
@@ -664,6 +653,75 @@ $("body").on('click', '#pre_icon', function() {
     } else {
         $(this).html('+');
     }
+});
+
+//Expand Q/A Tree
+var expand_id = 0;
+$("body").on('click', '.expand_tree', function() {
+    get_data();
+    expand_id = $(this).attr('data-id');
+    firebase.database().ref('histories/'+expand_id+'/questions').on('value', function(snapshot) {
+        var values = snapshot.val();
+        var last_value = values[values.length-1].answerId;
+        // $('#root').children('ul').toggleClass('hide-effect');
+        $('#'+last_value).children('ul').toggleClass('show-effect');
+        $('#'+last_value).parents().andSelf().toggleClass('show-effect');
+    });
+});
+
+var resolved_id = 0;
+$("body").on('click', '.resolved', function() {
+    resolved_id = $(this).attr('data-id');
+    firebase.database().ref('histories/'+resolved_id+'/resolved').once('value', function(snapshot) {
+        var value = snapshot.val();
+        if(value != null){
+            if(value == 'true') {
+                firebase.database().ref('histories/'+resolved_id+'/resolved').set('false', function(error) {
+                    if (error) {
+                      // The write failed...
+                      alert(error);
+                    } else {
+                        $(this).removeClass('marked_effect');
+                    }
+                  });
+            } else {
+                firebase.database().ref('histories/'+resolved_id+'/resolved').set('true', function(error) {
+                    if (error) {
+                      // The write failed...
+                      alert(error);
+                    } else {
+                        $(this).addClass('marked_effect');
+                    }
+                  });
+            }
+        } else {
+            firebase.database().ref('histories/'+resolved_id+'/resolved').set('true', function(error) {
+                if (error) {
+                  // The write failed...
+                  alert(error);
+                } else {
+                    $(this).addClass('marked_effect');
+                }
+              });
+        }
+    });
+    
+});
+//Import the resolved q/a
+$('#importQA').on('click', function(){
+    firebase.database().ref('maps_draft').once('value', function(snapshot) {
+        var value = snapshot.val();
+        firebase.database().ref('maps').remove();
+        firebase.database().ref('maps').set(value, function(error) {
+            if (error) {
+              // The write failed...
+              alert(error);
+            } else {
+              alert("Imported successfully.");
+            }
+          });
+    });
+    $("#import-modal").modal('hide');
 });
 </script>
 @endsection

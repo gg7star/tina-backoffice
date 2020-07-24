@@ -19,7 +19,7 @@
           <li><a href="{{url('advertisers')}}">My Advertisers</a></li>
           <li><a href="{{url('ads')}}">My Ads</a></li>
           <li><a href="{{url('qa')}}">My IT Resolutions</a></li>
-          
+          <li><a href="{{url('tinalab')}}">TinaLab</a></li>
         </ul>
       </div>
       <!--/.nav-collapse -->

@@ -9,6 +9,9 @@ a {
 .show-effect {
   display:block!important;
 }
+.hide-effect {
+  display:none!important; 
+}
 #root > ul {
   display: block!important;
 }

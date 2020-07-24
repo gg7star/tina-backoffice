@@ -31,6 +31,10 @@ class HomeController extends Controller
         return view('ads');
     }
 
+    public function tinalab(){
+        return view('tinalab');
+    }
+
     public function imageUpload(Request $request)
     {
         if ($request->images) {
