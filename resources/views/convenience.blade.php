@@ -64,7 +64,7 @@
                     <div class="form-group">
                         <label for="addr" class="col-md-12 col-form-label">Address</label>
                         <input id="addr" type="text" class="form-control" name="addr" value="" required autofocus>
-                        <i class="material-icons room-icon" onClick="codeAddress();">room</i> * Please click me to get geolocation.
+                        <i class="material-icons room-icon" onClick="add_address();">room</i> * Please click me to get geolocation.
                     </div>
                     <div class="form-group">
                         <label for="latitude" class="col-md-12 col-form-label">Latitude</label>
@@ -82,8 +82,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default add-data-from-delete-form" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-success desabled" id="submitStore">Add</button>
-                    <!-- <input type="button" class="btn btn-default add-data-from-delete-form" data-dismiss="modal" value="Cancel">
-                    <input type="submit" class="btn btn-success desabled" id="submitStore" value="Add"> -->
                 </div>
             </form>            
         </div>
@@ -104,8 +102,6 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default remove-data-from-delete-form" data-dismiss="modal">Cancel</button> 
                     <button type="button" class="btn btn-danger deleteMatchRecord">Delete</button>
-                    <!-- <input type="button" class="btn btn-default remove-data-from-delete-form" data-dismiss="modal" value="Cancel">
-                    <input type="submit" class="btn btn-danger deleteMatchRecord" value="Delete"> -->
                 </div>
             </div>
         </div>
@@ -125,9 +121,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default update-data-from-delete-form" data-dismiss="modal">Cancel</button> 
-                    <!-- <input type="button" class="btn btn-default update-data-from-delete-form" data-dismiss="modal" value="Cancel"> -->
                     <button type="button" class="btn btn-info updateUserRecord">Update</button>
-                    <!-- <input type="submit" class="btn btn-info updateUserRecord" value="Update"> -->
                 </div>
             </div>
         </div>
@@ -162,21 +156,32 @@ function initialize() {
     var input = document.getElementById('addr');
     var autocomplete = new google.maps.places.Autocomplete(input);
 }
-function codeAddress() {
+function add_address() {
+    var store_address = document.getElementById("addr").value;
+    codeAddress('add', store_address);
+}
+function update_address() {
+    var store_address = document.getElementById("update_addr").value;
+    codeAddress('update', store_address);
+}
+function codeAddress(type, address) {
     geocoder = new google.maps.Geocoder();
-    var address = document.getElementById("addr").value;
     geocoder.geocode( { 'address': address}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-        $('#latitude').val(results[0].geometry.location.lat());
-        $('#longitude').val(results[0].geometry.location.lng());
+        if(type == 'add') {
+            $('#latitude').val(results[0].geometry.location.lat());
+            $('#longitude').val(results[0].geometry.location.lng());
+        } else if(type == 'update') {
+            $('#update_latitude').val(results[0].geometry.location.lat());
+            $('#update_longitude').val(results[0].geometry.location.lng());
+        }
+        alert("Geocode was successful.");
       } 
       else {
         alert("Geocode was not successful for the following reason: " + status);
       }
     });
 }
-
-var lastIndex = 0;
 // Get Data
 firebase.database().ref('stores/').on('value', function(snapshot) {
     var value = snapshot.val();
@@ -195,8 +200,7 @@ firebase.database().ref('stores/').on('value', function(snapshot) {
                     <td><a data-toggle="modal" data-target="#update-modal" class="edit updateData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>\
                     <a data-toggle="modal" data-target="#remove-modal" class="delete removeData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>\
                 </tr>');
-            }       
-            lastIndex = index;
+            }
         });
     }
     $('#tbody').html(htmls);
@@ -215,14 +219,14 @@ $('#submitStore').on('click', function(){
     var longitude = values[5].value;    
     var img = values[6].value;
     var store_id = firebase.database().ref('stores/').push().key;
-    firebase.database().ref('stores/' + store_id + '/').update({
+    firebase.database().ref('stores/' + store_id + '/').set({
         title: store_name,
         phone: phone_number,
         email: email_addr,
         latitude: latitude,
         longitude: longitude,
         address: addr,
-        image: img
+        image: img,
     });
     // Reassign lastID value
     // lastIndex = userID;
@@ -249,17 +253,17 @@ $('body').on('click', '.updateData', function() {
                 <input id="email_addr" type="text" class="form-control" name="email_addr" value="'+values.email+'" required autofocus>\
             </div>\
             <div class="form-group">\
-                <label for="addr" class="col-md-12 col-form-label">Address</label>\
-                <input id="addr" type="text" class="form-control" name="addr" value="'+values.address+'" required autofocus>\
-                <i class="material-icons room-icon" onClick="codeAddress();">room</i> * Please click me to get geolocation.\
+                <label for="update_addr" class="col-md-12 col-form-label">Address</label>\
+                <input id="update_addr" type="text" class="form-control" name="update_addr" value="'+values.address+'" required autofocus>\
+                <i class="material-icons room-icon" onClick="update_address();">room</i> * Please click me to get geolocation.\
             </div>\
             <div class="form-group">\
-                <label for="latitude" class="col-md-12 col-form-label">Latitude</label>\
-                <input id="latitude" type="text" class="form-control" name="latitude" value="'+values.latitude+'" required readonly>\
+                <label for="update_latitude" class="col-md-12 col-form-label">Latitude</label>\
+                <input id="update_latitude" type="text" class="form-control" name="update_latitude" value="'+values.latitude+'" required readonly>\
             </div>\
             <div class="form-group">\
-                <label for="longitude" class="col-md-12 col-form-label">Longitude</label>\
-                <input id="longitude" type="text" class="form-control" name="longitude" value="'+values.longitude+'" required readonly>\
+                <label for="update_longitude" class="col-md-12 col-form-label">Longitude</label>\
+                <input id="update_longitude" type="text" class="form-control" name="update_longitude" value="'+values.longitude+'" required readonly>\
             </div>\
             <div class="form-group">\
                 <label for="img" class="col-md-12 col-form-label">Image(e.g: http://anr.gwl.mybluehost.me/depanneur_fibrotech.png)</label>\

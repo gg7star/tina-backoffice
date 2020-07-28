@@ -264,6 +264,8 @@ $('.submitAds').on('click', function(){
                 alert("Uploading image was failed.")
             }
         });
+    } else {
+        alert("Please choose an image of this advertisement.");
     }
 
 });

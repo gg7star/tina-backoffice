@@ -385,14 +385,15 @@ $('.updateinfoRecord').on('click', function() {
     firebase.database().ref().update(updates, function(error) {
         if (error) {
           // The write failed...
-          $('.loading_screen').css('display','none');
           alert(error);
         } else {
           // Data saved successfully!
-          $('.loading_screen').css('display','none');
         }
       });
     $("#updateinfo-modal").modal('hide');
+    get_data();
+    $('#info_'+updateinfoID).children('ul').toggleClass('show-effect');
+    $('#info_'+updateinfoID).parents().andSelf().toggleClass('show-effect');
 });
 // Update Data
 var updateID = 0;
@@ -450,6 +451,9 @@ $('.updateRecord').on('click', function() {
         }
       });
     $("#update-modal").modal('hide');
+    get_data();
+    $('#'+updateID).children('ul').toggleClass('show-effect');
+    $('#'+updateID).parents().andSelf().toggleClass('show-effect');
 });
 //Add Info
 var qid = 0;
@@ -482,7 +486,9 @@ $('#addINFO').on('click', function(){
     });
     $("#addinfo_form input").val("");
     $("#addinfo-modal").modal('hide');
-    // get_data();
+    get_data();
+    $('#info_'+qid).children('ul').toggleClass('show-effect');
+    $('#info_'+qid).parents().andSelf().toggleClass('show-effect');
 });
 //Add Data
 var add_parentID = 0;
@@ -599,6 +605,8 @@ $('#addQA').on('click', function(){
     $("#addresolutions input").val("");
     $("#add-modal").modal('hide');
     get_data();
+    $('#'+addID).children('ul').toggleClass('show-effect');
+    $('#'+addID).parents().andSelf().toggleClass('show-effect');
 });
 //Export Data
 $('#exportQA').on('click', function(){
@@ -655,11 +663,14 @@ $('.deleteMatchRecord').on('click', function(){
     $('body').find('.remove-record-model').find( "input" ).remove();
     $("#remove-modal").modal('hide');
     get_data();
+    $('#'+id).children('ul').toggleClass('show-effect');
+    $('#'+id).parents().andSelf().toggleClass('show-effect');
 });
 $("body").on('click', '#pre_icon', function() {
     var obj = $(this);
     $(this).parent().closest('li').find('ul:first').toggleClass('show-effect');
-    if ($(this).text() == "+") {
+    var class_name = $(this).parent().closest('li').find('ul:first').attr('class');
+    if (class_name == 'show-effect'){
         $(this).html('-');
     } else {
         $(this).html('+');

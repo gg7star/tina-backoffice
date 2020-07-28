@@ -42,6 +42,9 @@ ul li a.elements{
 .marked_effect{
     color: lightgreen!important;
 }
+.expanded_effect{
+    color: #FFC107!important;
+}
 </style>
 @endsection
 @section('content')
@@ -423,6 +426,9 @@ $('.updateinfoRecord').on('click', function() {
         }
       });
     $("#updateinfo-modal").modal('hide');
+    get_data();
+    $('#info_'+updateinfoID).children('ul').toggleClass('show-effect');
+    $('#info_'+updateinfoID).parents().andSelf().toggleClass('show-effect');
 });
 // Update Data
 var updateID = 0;
@@ -480,6 +486,9 @@ $('.updateRecord').on('click', function() {
         }
       });
     $("#update-modal").modal('hide');
+    get_data();
+    $('#'+updateID).children('ul').toggleClass('show-effect');
+    $('#'+updateID).parents().andSelf().toggleClass('show-effect');
 });
 //Add Info
 var qid = 0;
@@ -512,7 +521,9 @@ $('#addINFO').on('click', function(){
     });
     $("#addinfo_form input").val("");
     $("#addinfo-modal").modal('hide');
-    // get_data();
+    get_data();
+    $('#info_'+qid).children('ul').toggleClass('show-effect');
+    $('#info_'+qid).parents().andSelf().toggleClass('show-effect');
 });
 //Add Data
 var add_parentID = 0;
@@ -629,6 +640,8 @@ $('#addQA').on('click', function(){
     $("#addresolutions input").val("");
     $("#add-modal").modal('hide');
     get_data();
+    $('#'+addID).children('ul').toggleClass('show-effect');
+    $('#'+addID).parents().andSelf().toggleClass('show-effect');
 });
 
 // Remove Data
@@ -644,11 +657,14 @@ $('.deleteMatchRecord').on('click', function(){
     $('body').find('.remove-record-model').find( "input" ).remove();
     $("#remove-modal").modal('hide');
     get_data();
+    $('#'+id).children('ul').toggleClass('show-effect');
+    $('#'+id).parents().andSelf().toggleClass('show-effect');
 });
 $("body").on('click', '#pre_icon', function() {
     var obj = $(this);
     $(this).parent().closest('li').find('ul:first').toggleClass('show-effect');
-    if ($(this).text() == "+") {
+    var class_name = $(this).parent().closest('li').find('ul:first').attr('class');
+    if (class_name == 'show-effect'){
         $(this).html('-');
     } else {
         $(this).html('+');
@@ -659,11 +675,12 @@ $("body").on('click', '#pre_icon', function() {
 var expand_id = 0;
 $("body").on('click', '.expand_tree', function() {
     get_data();
+    // $('.expand_tree').removeClass('expanded_effect');
     expand_id = $(this).attr('data-id');
+    // $(this).addClass('expanded_effect');
     firebase.database().ref('histories/'+expand_id+'/questions').on('value', function(snapshot) {
         var values = snapshot.val();
         var last_value = values[values.length-1].answerId;
-        // $('#root').children('ul').toggleClass('hide-effect');
         $('#'+last_value).children('ul').toggleClass('show-effect');
         $('#'+last_value).parents().andSelf().toggleClass('show-effect');
     });
