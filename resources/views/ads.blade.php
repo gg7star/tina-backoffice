@@ -116,7 +116,7 @@
         <div class="modal-dialog" style="width:55%;">
             <div class="modal-content" style="overflow: hidden;">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Ads</h4>                    
+                    <h4 class="modal-title">Edit Ads</h4>
                     <button type="button" class="close update-data-from-delete-form" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body" id="updateBody">
@@ -227,42 +227,44 @@ $('body').on('click', '.newads', function() {
 $('.submitAds').on('click', function(){
     let image_upload_file = new FormData();
     let TotalImages = $('#image')[0].files.length;  //Total Images
-    let images = $('#image')[0];  
+    if (TotalImages > 0) {
+        let images = $('#image')[0];  
 
-    for (let i = 0; i < TotalImages; i++) {
-        image_upload_file.append('images', images.files[i]);
-    }
-    $.ajax({
-        type:'POST',
-        url:'{{ url("image-upload") }}',
-        data:image_upload_file,
-        contentType: false,
-        processData: false,
-        success: function (image_name) {
-            var values = $(".addAds_form").serializeArray();
-            var ads_id = firebase.database().ref('advertisements').push().key;
-            if(sel_index != null){
-                firebase.database().ref('advertisements/'+ads_id).set({
-                    advertiser_id: advertiser_ids[sel_index],
-                    name: values[2].value,
-                    start_date: values[3].value,
-                    end_date: values[4].value,
-                    image: document.location.origin+"/img/"+image_name,
-                    linked_url: values[5].value,
-                }, function(error) {
-                    if(error)
-                        alert(error);
-                });
-                $(".addAds_form input").val("");
-                $("#add-modal").modal('hide');
-            } else {
-                alert("Please select a advertiser.");
-            }
-        },
-        error: function () {
-            alert("Uploading image was failed.")
+        for (let i = 0; i < TotalImages; i++) {
+            image_upload_file.append('images', images.files[i]);
         }
-    });
+        $.ajax({
+            type:'POST',
+            url:'{{ url("image-upload") }}',
+            data:image_upload_file,
+            contentType: false,
+            processData: false,
+            success: function (image_name) {
+                var values = $(".addAds_form").serializeArray();
+                var ads_id = firebase.database().ref('advertisements').push().key;
+                if(sel_index != null){
+                    firebase.database().ref('advertisements/'+ads_id).set({
+                        advertiser_id: advertiser_ids[sel_index],
+                        name: values[2].value,
+                        start_date: values[3].value,
+                        end_date: values[4].value,
+                        image: document.location.origin+"/img/"+image_name,
+                        linked_url: values[5].value,
+                    }, function(error) {
+                        if(error)
+                            alert(error);
+                    });
+                    $(".addAds_form input").val("");
+                    $("#add-modal").modal('hide');
+                } else {
+                    alert("Please select a advertiser.");
+                }
+            },
+            error: function () {
+                alert("Uploading image was failed.")
+            }
+        });
+    }
 
 });
 // $('body').on('click', '.upload_img', function() {
@@ -301,30 +303,32 @@ $('body').on('click', '.updateData', function() {
 $('.updateUserRecord').on('click', function() {
     let image_upload_file = new FormData();
     let TotalImages = $('#update_image')[0].files.length;  //Total Images
-    let images = $('#update_image')[0];  
+    if (TotalImages > 0){
+        let images = $('#update_image')[0];  
 
-    for (let i = 0; i < TotalImages; i++) {
-        image_upload_file.append('images', images.files[i]);
-    }
-    $.ajax({
-        type:'POST',
-        url:'{{ url("image-upload") }}',
-        data:image_upload_file,
-        contentType: false,
-        processData: false,
-        success: function (image_name) {
-            var values = $(".users-update-record-model").serializeArray();
-            firebase.database().ref('advertisements/'+updateID+'/name').set(values[0].value);
-            firebase.database().ref('advertisements/'+updateID+'/start_date').set(values[1].value);
-            firebase.database().ref('advertisements/'+updateID+'/end_date').set(values[2].value);
-            firebase.database().ref('advertisements/'+updateID+'/image').set(document.location.origin+"/img/"+image_name);
-            firebase.database().ref('advertisements/'+updateID+'/linked_url').set(values[3].value);
-            $("#update-modal").modal('hide');
-        },
-        error: function () {
-            alert("Uploading image was failed.")
+        for (let i = 0; i < TotalImages; i++) {
+            image_upload_file.append('images', images.files[i]);
         }
-    });
+        $.ajax({
+            type:'POST',
+            url:'{{ url("image-upload") }}',
+            data:image_upload_file,
+            contentType: false,
+            processData: false,
+            success: function (image_name) {
+                firebase.database().ref('advertisements/'+updateID+'/image').set(document.location.origin+"/img/"+image_name);
+            },
+            error: function () {
+                alert("Uploading image was failed.")
+            }
+        });
+    }
+    var values = $(".users-update-record-model").serializeArray();
+    firebase.database().ref('advertisements/'+updateID+'/name').set(values[0].value);
+    firebase.database().ref('advertisements/'+updateID+'/start_date').set(values[1].value);
+    firebase.database().ref('advertisements/'+updateID+'/end_date').set(values[2].value);
+    firebase.database().ref('advertisements/'+updateID+'/linked_url').set(values[3].value);
+    $("#update-modal").modal('hide');
 });
 
 
