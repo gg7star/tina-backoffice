@@ -276,12 +276,17 @@ function draw_node(index, title, solution, yid, nid, did, info){
     if(solution == null){
         if(info == null){
             if((index !== "undefined") && (index != null)){
-                sub_htmls.push('<ul><li><a><button type="button" id="pre_icon">+</button>'+title+'</a><a data-toggle="modal" data-target="#update-modal" class="edit updateData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a><div id="ynd_'+lastIndex+'"></div></li>');
+                sub_htmls.push('<ul><li><a><button type="button" id="pre_icon">+</button>'+title+'</a>\
+                    <a data-toggle="modal" data-target="#update-modal" class="edit updateData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>\
+                    <a data-toggle="modal" data-target="#remove-modal" class="delete removeData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>\
+                    <div id="ynd_'+lastIndex+'"></div></li>');
                 $('#'+index).html(sub_htmls.join(""));
                 get_child_node(index, yid, nid, did);
             }
         }else {
-            sub_htmls.push('<ul><li><a>'+info[0]+'</a><a data-toggle="modal" data-target="#updateinfo-modal" class="edit updateinfoData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></li></ul>');
+            sub_htmls.push('<ul><li><a>'+info[0]+'</a>\
+                <a data-toggle="modal" data-target="#updateinfo-modal" class="edit updateinfoData" data-id="'+index+'"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>\
+                </li></ul>');
             $('#info_'+index).html(sub_htmls.join(""));
         }
     } else {
