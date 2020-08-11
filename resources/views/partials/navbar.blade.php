@@ -20,6 +20,14 @@
           <li><a href="{{url('ads')}}">My Ads</a></li>
           <li><a href="{{url('qa')}}">My IT Resolutions</a></li>
           <li><a href="{{url('tinalab')}}">TinaLab</a></li>
+          <li><a class="dropdown-item" href="{{ route('logout') }}"
+             onclick="event.preventDefault();
+                           document.getElementById('logout-form').submit();">
+              {{ __('Logout') }}
+          </a></li>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+              @csrf
+          </form>
         </ul>
       </div>
       <!--/.nav-collapse -->

@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 Route::get('users', 'HomeController@users');
 Route::get('convenience', 'HomeController@convenience');
 Route::get('qa', 'HomeController@qa');
@@ -22,3 +22,7 @@ Route::get('advertisers', 'HomeController@advertisers');
 Route::get('ads', 'HomeController@ads');
 Route::get('tinalab', 'HomeController@tinalab');
 Route::post('image-upload', 'HomeController@imageUpload');
+
+Auth::routes();
+
+Route::get('/', 'HomeController@index')->name('welcome');
